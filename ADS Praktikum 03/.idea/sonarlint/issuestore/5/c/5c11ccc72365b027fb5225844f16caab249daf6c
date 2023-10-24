@@ -1,0 +1,10 @@
+
+g	java:S101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(ØÎÍäúÿÿÿÿ
+M
+java:S6126("2Replace this String concatenation with Text block.(‚©†Æûÿÿÿÿ
+H
+java:S61262"2Replace this String concatenation with Text block.(ôæËö
+M
+java:S1128"2Remove this unused import 'java.util.Collections'.(¢³ïÓşÿÿÿÿ
+F
+java:S5960J"+Remove this assertion from production code.(†‡ÖÉûÿÿÿÿ
