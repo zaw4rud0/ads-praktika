@@ -4,7 +4,7 @@ Repository für die Praktika aus dem Kurs Algorithmen und Datenstrukturen 2023
 ## Übersicht
 
 | Woche | Thema | Praktikum |
-|:-----:|-------|-----------|
+|:-----:|-------|:---------:|
 | 01 | Die Welt der Algorithmen, ADT, Stacks, Queues | [Link](https://github.com/xHarlock/ads-praktika/tree/main/ADS%20Praktikum%2001) |
 | 02 | O-Notation, Listen (verkettet, sortiert), Collection-Interface | [Link](https://github.com/xHarlock/ads-praktika/tree/main/ADS%20Praktikum%2002) |
 | 03 | Sets, Generics, Generics im Collection-Framework | [Link](https://github.com/xHarlock/ads-praktika/tree/main/ADS%20Praktikum%2003) |
