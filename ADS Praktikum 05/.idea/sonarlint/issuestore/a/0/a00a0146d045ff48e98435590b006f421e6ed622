@@ -1,0 +1,11 @@
+
+f
+java:S1301C"KReplace this "switch" statement by "if" statements to increase readability.(õÙÆ‚úÿÿÿÿ
+b	java:S101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(ØºÂ¥
+S
+java:S1117>"8Rename "tree" which hides the field declared at line 21.(ş¯¾ışÿÿÿÿ
+D
+java:S2140B")Use "java.util.Random.nextInt()" instead.(ïøÇíùÿÿÿÿ
+<	java:S131C""Add a default case to this switch.(õÙÆ‚úÿÿÿÿ
+A
+java:S5960$"+Remove this assertion from production code.(Õ£ÙŒ
