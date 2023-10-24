@@ -1,0 +1,11 @@
+
+g	java:S101
+"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(‘£Èßûÿÿÿÿ
+b	java:S116"NRename this field "EPS" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿ¿­W
+6
+java:S1170"!Make this final field static too.(ÿ¿­W
+V	java:S107"<Method has 8 parameters, which is greater than 7 authorized.(«Û›Øýÿÿÿÿ
+U
+java:S1659"?Declare "ay" and all following declarations on a separate line.(‚ùÆ…
+F
+java:S5960T"+Remove this assertion from production code.(ý†´Íÿÿÿÿÿ
