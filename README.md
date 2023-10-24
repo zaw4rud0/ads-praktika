@@ -1,4 +1,4 @@
-# ADS Praktika
+# Algorithmen und Datenstrukturen Praktika
 Repository für die Praktika aus dem Kurs Algorithmen und Datenstrukturen 2023
 
 ## Übersicht
