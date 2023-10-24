@@ -1,0 +1,15 @@
+
+[	java:S112C"FDefine and throw a dedicated exception instead of using a generic one.(¥¾¹´
+d
+java:S2095"NUse try-with-resources or close this "RandomAccessFile" in a "finally" clause.(£À„’
+N	java:S106"9Replace this use of System.out or System.err by a logger.(«‹Îõ
+>	java:S108")Either remove or fill this block of code.(ï­£Ä
+<
+java:S1168"&Return an empty array instead of null.(¥¹ï
+U
+java:S1161%":Add the "@Override" annotation above this method signature(Þ…„þÿÿÿÿ
+S	java:S106&"9Replace this use of System.out or System.err by a logger.(ÀáÅîýÿÿÿÿ
+P
+java:S1118B":Add a private constructor to hide the implicit public one.(Ê§íá
+6
+java:S3878J"Remove this array creation.(‘£Ùìýÿÿÿÿ
