@@ -2,35 +2,66 @@ package ch.zhaw.ads;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class FuzzySearchServer implements CommandExecutor {
-    public static List<String> names = new ArrayList<>(); // List of all names
-    public static Map<String, List<Integer>> trigrams = new HashMap<>(); // List of all Trigrams
-    public static Map<Integer, Integer> counts = new HashMap<>(); // Key: index of
 
-    // load all names into names List
-    // each name only once (i.e. no doublettes allowed
+    protected static final List<String> names = new ArrayList<>(); // List of all names
+    protected static final Map<String, List<Integer>> trigrams = new HashMap<>(); // List of all Trigrams
+    protected static final Map<Integer, Integer> counts = new HashMap<>(); // Key: index of
+
+    /**
+     * Loads unique names from a given string into the names list.
+     * Each name in the input string should be separated by a newline and a semicolon.
+     *
+     * @param nameString The string containing names to load.
+     */
     public static void loadNames(String nameString) {
-        // TODO implement
+        String[] entries = nameString.split("\n");
+        for (String entry : entries) {
+            String name = entry.split(";")[0].trim();
+            if (!names.contains(name)) {
+                names.add(name);
+            }
+        }
     }
 
-    // add a single trigram to 'trigrams' index
+    /**
+     * Adds a single trigram to the trigrams map. If the trigram already exists,
+     * it updates the list of name indexes associated with this trigram.
+     *
+     * @param nameIdx The index of the name in the names list.
+     * @param trig    The trigram to be added.
+     */
     public static void addToTrigrams(int nameIdx, String trig) {
-        // TODO implement
+        List<Integer> indices = trigrams.getOrDefault(trig, new ArrayList<>());
+        if (!indices.contains(nameIdx)) {
+            indices.add(nameIdx);
+        }
+        trigrams.put(trig, indices);
     }
 
-    // works better for flipped and short names if " " added and lowercase
-    private static String nomalize(String name) {
+
+    // Works better for flipped and short names if " " added and lowercase
+    private static String normalize(String name) {
         return " " + name.toLowerCase().trim() + " ";
     }
 
-    // construct a list of trigrams for a name
+    /**
+     * Constructs a list of trigrams for a given name. The name is first normalized
+     * by converting to lowercase and trimming spaces.
+     *
+     * @param name The name for which to construct trigrams.
+     * @return A list of trigrams for the given name.
+     */
     public static List<String> trigramForName(String name) {
-        name = nomalize(name);
-        // TODO implement
+        name = normalize(name);
+        List<String> trigs = new ArrayList<>();
+        for (int i = 0; i < name.length() - 2; i++) {
+            trigs.add(name.substring(i, i + 3));
+        }
+        return trigs;
     }
 
     public static void constructTrigramIndex(List<String> names) {
@@ -44,18 +75,39 @@ public class FuzzySearchServer implements CommandExecutor {
 
     private static void incCount(int cntIdx) {
         Integer c = counts.get(cntIdx);
-        c = (c == null)?  1 : c + 1;
+        c = (c == null) ? 1 : c + 1;
         counts.put(cntIdx, c);
     }
 
-    // find name index with most corresponding trigrams
-    // if no trigram/name matches at all then return -1
+    /**
+     * Finds the index of the name in the names list that has the most corresponding
+     * trigrams to the given name. If no trigram/name matches, returns -1.
+     *
+     * @param name The name to search for in the trigram index.
+     * @return The index of the best-matching name, or -1 if no match is found.
+     */
     public static int findIdx(String name) {
         counts.clear();
         int maxIdx = -1;
-        // TODO implement
+        int maxCount = 0;
+
+        List<String> searchTrigrams = trigramForName(name);
+        for (String trig : searchTrigrams) {
+            List<Integer> nameIndices = trigrams.get(trig);
+            if (nameIndices != null) {
+                for (Integer idx : nameIndices) {
+                    incCount(idx);
+                    int count = counts.get(idx);
+                    if (count > maxCount) {
+                        maxCount = count;
+                        maxIdx = idx;
+                    }
+                }
+            }
+        }
         return maxIdx;
     }
+
     // finde Namen gebe "" zurück wenn gefundener Name nicht grösser als verlangter score ist.
     public static String find(String searchName, int scoreRequired) {
         int found = findIdx(searchName);
@@ -71,7 +123,7 @@ public class FuzzySearchServer implements CommandExecutor {
         return (int) (100.0 * Math.min(counts.get(found), foundName.length()) / foundName.length());
     }
 
-    public String execute(String searchName)  {
+    public String execute(String searchName) {
         int found = findIdx(searchName);
         if (found >= 0) {
             int score = score(found);
@@ -82,7 +134,7 @@ public class FuzzySearchServer implements CommandExecutor {
         }
     }
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         FuzzySearchServer fs = new FuzzySearchServer();
         System.out.println(fs.execute("Kiptum Daniel"));
         System.out.println(fs.execute("Daniel Kiptum"));
