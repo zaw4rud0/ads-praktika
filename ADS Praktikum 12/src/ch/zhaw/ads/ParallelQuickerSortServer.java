@@ -4,14 +4,17 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class ParallelQuickerSortServer extends Thread implements CommandExecutor {
-    int[] arr, sourceArr;
-    int left, right;
+    int[] arr;
+    int[] sourceArr;
+    int left;
+    int right;
     static int dataElems = 100000;
     static int insertion_threshold = 100;
     private final int SPLIT_THRESHOLD = 5000;
-    private final int DATARANGE = 10000000;
+    private final int DATA_RANGE = 10000000;
 
-    public ParallelQuickerSortServer() {}
+    public ParallelQuickerSortServer() {
+    }
 
     public ParallelQuickerSortServer(int[] arr, int left, int right) {
         this.arr = arr;
@@ -19,26 +22,63 @@ public class ParallelQuickerSortServer extends Thread implements CommandExecutor
         this.right = right;
     }
 
+    @Override
     public void run() {
-        int mid = 0;
+        int indexPivot;
         Thread t1 = null;
         Thread t2 = null;
 
         if (left < right) {
-            // TODO Aufgabe 12.3
+            indexPivot = partition(arr, left, right);
+            if (indexPivot - left > SPLIT_THRESHOLD) {
+                t1 = new ParallelQuickerSortServer(arr, left, indexPivot - 1);
+                t1.start();
+            } else {
+                quickerSort(arr, left, indexPivot - 1);
+            }
+            if (right - indexPivot > SPLIT_THRESHOLD) {
+                t2 = new ParallelQuickerSortServer(arr, indexPivot + 1, right);
+                t2.start();
+            } else {
+                quickerSort(arr, indexPivot + 1, right);
+            }
+        }
+        try {
+            if (t1 != null) t1.join();
+            if (t2 != null) t2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
     private void quickerSort(int[] arr, int left, int right) {
-        // TODO Aus Aufgabe 12.1 übernehmen
+        if (left < right) {
+            if (right - left <= insertion_threshold) {
+                insertionSort(arr, left, right);
+            } else {
+                moveMedianValueToTheRight(arr, left, right);
+                int indexPivot = partition(arr, left, right);
+                quickerSort(arr, left, indexPivot - 1);
+                quickerSort(arr, indexPivot + 1, right);
+            }
+        }
     }
 
     private int partition(int[] arr, int left, int right) {
-        // TODO Aus Aufgabe 12.1 übernehmen
+        int pivotValue = arr[right];
+        int i = left;
+
+        for (int j = left; j <= right - 1; j++) {
+            if (arr[j] < pivotValue) {
+                swap(arr, i, j);
+                i++;
+            }
+        }
+        swap(arr, i, right);
+        return i;
     }
 
-    private void moveMedianValueToTheRight(int[] arr, int left, int right)
-    {
+    private void moveMedianValueToTheRight(int[] arr, int left, int right) {
         if (right - left < 5) return;
         int mid = (right + left) / 2;
         if (arr[left] <= arr[mid] && arr[mid] <= arr[right] || arr[right] <= arr[mid] && arr[mid] <= arr[left]) {
@@ -68,7 +108,7 @@ public class ParallelQuickerSortServer extends Thread implements CommandExecutor
     int[] randomData() {
         int[] a = new int[dataElems];
         for (int i = 0; i < a.length; i++) {
-            a[i] = (int) (Math.random() * DATARANGE);
+            a[i] = (int) (Math.random() * DATA_RANGE);
         }
         return a;
     }
@@ -145,12 +185,8 @@ public class ParallelQuickerSortServer extends Thread implements CommandExecutor
         sourceArr = new int[dataElems];
         insertion_threshold = Integer.parseInt(args[2]);
         try {
-            try {
-                double time = measureTime(generator.get(args[0]));
-                return arg + " " + time + " ms\n";
-            } catch (Exception ex) {
-                return arg + " " + ex.getMessage();
-            }
+            double time = measureTime(generator.get(args[0]));
+            return arg + " " + time + " ms\n";
         } catch (Exception ex) {
             return arg + " " + ex.getMessage();
         }
@@ -159,8 +195,11 @@ public class ParallelQuickerSortServer extends Thread implements CommandExecutor
     public static void main(String[] args) {
         ParallelQuickerSortServer sorter = new ParallelQuickerSortServer();
         String sort;
-        sort = "RANDOM 10000 100"; System.out.println(sorter.execute(sort));
-        sort = "ASC 10000 100"; System.out.println(sorter.execute(sort));
-        sort = "DESC 10000 100"; System.out.println(sorter.execute(sort));
+        sort = "RANDOM 10000 100";
+        System.out.println(sorter.execute(sort));
+        sort = "ASC 10000 100";
+        System.out.println(sorter.execute(sort));
+        sort = "DESC 10000 100";
+        System.out.println(sorter.execute(sort));
     }
 }
