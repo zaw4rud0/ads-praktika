@@ -1,5 +1,6 @@
 # Algorithmen und Datenstrukturen Praktika
-Repository für die Praktika aus dem Kurs Algorithmen und Datenstrukturen 2023
+
+Repository für die Praktika aus dem Kurs Algorithmen und Datenstrukturen im HS23
 
 ## Übersicht
 
