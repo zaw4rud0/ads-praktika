@@ -6,12 +6,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Storage {
-    public static boolean generationalGCActive = false; // in Aufgabe 2 verwendet
+    public static boolean generationalGCActive = true; // in Aufgabe 2 verwendet
     public static StringBuffer log = new StringBuffer();
     private static List<Collectable> root;
     private static List<Collectable> youngHeap;
     private static List<Collectable> oldHeap;
     public static boolean youngGenerationOnly = true;
+
+    private static int gcCounter = 0;
 
     static {
         clear();
@@ -22,6 +24,7 @@ public class Storage {
         youngHeap = new LinkedList<>();
         // oldHeap erst in Aufgabe 2 verwenden!
         oldHeap = new LinkedList<>();
+        gcCounter = 0;
     }
 
     /* add  root object */
@@ -120,15 +123,50 @@ public class Storage {
     }
 
     private static void mark(Collectable cObject) {
-        // TODO Aufgabe 13.1
+        if (cObject.isMarked()) {
+            return;
+        }
+        cObject.setMark(true);
+        for (Collectable c : getRefs(cObject)) {
+            mark(c);
+        }
     }
 
-    private static void sweep() {
-        // TODO Aufgabe 13.1 und Aufgabe 13.2
+    private static void sweep(boolean youngGenerationOnly) {
+        if (generationalGCActive) {
+            for (Collectable c : getYoungHeap()) {
+                if (!c.isMarked()) {
+                    delete(c);
+                } else {
+                    c.setMark(false);
+                    youngHeap.remove(c);
+                    oldHeap.add(c);
+                }
+            }
+            if (!youngGenerationOnly) {
+                for (Collectable c : getOldHeap()) {
+                    if (!c.isMarked()) {
+                        delete(c);
+                    } else {
+                        c.setMark(false);
+                    }
+                }
+            }
+        } else {
+            for (Collectable c : getHeap()) {
+                if (!c.isMarked()) {
+                    delete(c);
+                } else {
+                    c.setMark(false);
+                }
+            }
+        }
     }
 
     public static void gc() {
         if (generationalGCActive) {
+            gcCounter++;
+            youngGenerationOnly = gcCounter % 2 != 0;
             if (youngGenerationOnly) {
                 log.append("\nCollector start young generation only\n");
             } else {
@@ -138,7 +176,10 @@ public class Storage {
             log.append("\nCollector start\n");
         }
 
-        // TODO Aufgabe 13.1 und Aufgabe 13.2
+        for (Collectable c : getRoot()) {
+            mark(c);
+        }
+        sweep(youngGenerationOnly);
 
         log.append("Collector end\n");
     }
