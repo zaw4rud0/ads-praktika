@@ -19,4 +19,4 @@ Repository für die Praktika aus dem Kurs Algorithmen und Datenstrukturen im HS2
 | 11 | Sortieren 1: Insertion-, Selection- und Bubble-Sort, Stabilität | [Link](https://github.com/xHarlock/ads-praktika/tree/main/ADS%20Praktikum%2011) |
 | 12 | Sortieren 2: Teile und Herrsche, Quick-, Distribution- und Merge-Sort, Optimierung durch Parallelisierung (Threads) | [Link](https://github.com/xHarlock/ads-praktika/tree/main/ADS%20Praktikum%2012) |
 | 13 | Fortsetzung Optimierung durch Parallelisierung (Thread-Pool, Fork/Join), Speicherverwaltung, Java-Memory-Modell, Garbage-Collection (einfache und vollautomatische Algorithmen), GC in Java, Tuning | [Link](https://github.com/xHarlock/ads-praktika/tree/main/ADS%20Praktikum%20013) |
-| 14 | Randomisierte und heuristische Appoximationsverfahren, dynamische Programmierung | Keins |
+| 14 | Randomisierte und heuristische Appoximationsverfahren, dynamische Programmierung | - |
